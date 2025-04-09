@@ -76,3 +76,68 @@ for i in range(5):
   plt.axis('off')
 plt.show()
      
+# Preprocessing
+# Image dimensions and batch size
+img_width, img_height = 150, 150
+batch_size = 32 # there will be 32 images in a batch!
+
+# Data generators
+train_datagen = ImageDataGenerator(rescale=1./255)
+val_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size = (img_width, img_height),
+    batch_size = batch_size,
+    class_mode = 'binary',
+    shuffle = True
+)
+
+val_generator = val_datagen.flow_from_directory(
+    val_dir,
+    target_size = (img_width, img_height),
+    batch_size = batch_size,
+    class_mode = 'binary',
+    shuffle = True
+)
+
+test_generator = test_datagen.flow_from_directory(
+    test_dir,
+    target_size = (img_width, img_height),
+    batch_size = batch_size,
+    class_mode = 'binary',
+    shuffle = True
+)
+     
+Found 1887 images belonging to 2 classes.
+Found 402 images belonging to 2 classes.
+Found 410 images belonging to 2 classes.
+
+# map the indices
+class_mapping = train_generator.class_indices
+# print(class_mapping)
+# Extract the class names
+class_names = list(class_mapping.keys())
+print("Class Names:", class_names)
+     
+Class Names: ['fire', 'nofire']
+
+# Let's build the CNN Model
+model = Sequential([
+    Input(shape=(img_width, img_height, 3)),
+    Conv2D(32, (3,3), activation='relu'),
+    MaxPooling2D(pool_size=(2,2)),
+
+    Conv2D(64, (3, 3), activation='relu'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Conv2D(128, (3, 3), activation='relu'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dropout(0.5),
+    Dense(1, activation='sigmoid')
+]
+)
