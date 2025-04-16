@@ -141,3 +141,403 @@ model = Sequential([
     Dense(1, activation='sigmoid')
 ]
 )
+model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+model.summary()
+     
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                 │ (None, 148, 148, 32)   │           896 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d (MaxPooling2D)    │ (None, 74, 74, 32)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_1 (Conv2D)               │ (None, 72, 72, 64)     │        18,496 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d_1 (MaxPooling2D)  │ (None, 36, 36, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_2 (Conv2D)               │ (None, 34, 34, 128)    │        73,856 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d_2 (MaxPooling2D)  │ (None, 17, 17, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten (Flatten)               │ (None, 36992)          │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense (Dense)                   │ (None, 512)            │    18,940,416 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout (Dropout)               │ (None, 512)            │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_1 (Dense)                 │ (None, 1)              │           513 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 19,034,177 (72.61 MB)
+ Trainable params: 19,034,177 (72.61 MB)
+ Non-trainable params: 0 (0.00 B)
+
+# train the model
+history = model.fit(
+    train_generator,
+    steps_per_epoch = train_generator.samples // batch_size,
+    epochs = 12,
+    validation_data = val_generator,
+    validation_steps = val_generator.samples // batch_size
+)
+     
+/usr/local/lib/python3.11/dist-packages/keras/src/trainers/data_adapters/py_dataset_adapter.py:121: UserWarning: Your `PyDataset` class should call `super().__init__(**kwargs)` in its constructor. `**kwargs` can include `workers`, `use_multiprocessing`, `max_queue_size`. Do not pass these arguments to `fit()`, as they will be ignored.
+  self._warn_if_super_not_called()
+Epoch 1/12
+32/58 ━━━━━━━━━━━━━━━━━━━━ 3:13 7s/step - accuracy: 0.4874 - loss: 0.9499
+/usr/local/lib/python3.11/dist-packages/PIL/Image.py:3402: DecompressionBombWarning: Image size (104688771 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack.
+  warnings.warn(
+51/58 ━━━━━━━━━━━━━━━━━━━━ 53s 8s/step - accuracy: 0.5278 - loss: 0.8587 
+/usr/local/lib/python3.11/dist-packages/PIL/Image.py:3402: DecompressionBombWarning: Image size (89747104 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack.
+  warnings.warn(
+58/58 ━━━━━━━━━━━━━━━━━━━━ 568s 10s/step - accuracy: 0.5410 - loss: 0.8325 - val_accuracy: 0.6901 - val_loss: 0.5447
+Epoch 2/12
+ 1/58 ━━━━━━━━━━━━━━━━━━━━ 1s 35ms/step - accuracy: 0.7500 - loss: 0.4796
+/usr/local/lib/python3.11/dist-packages/keras/src/trainers/epoch_iterator.py:107: UserWarning: Your input ran out of data; interrupting training. Make sure that your dataset or generator can generate at least `steps_per_epoch * epochs` batches. You may need to use the `.repeat()` function when building your dataset.
+  self._interrupted_warning()
+58/58 ━━━━━━━━━━━━━━━━━━━━ 91s 2s/step - accuracy: 0.7500 - loss: 0.4796 - val_accuracy: 0.7083 - val_loss: 0.5231
+Epoch 3/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 556s 9s/step - accuracy: 0.7448 - loss: 0.4994 - val_accuracy: 0.7708 - val_loss: 0.4705
+Epoch 4/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 84s 1s/step - accuracy: 0.7500 - loss: 0.5213 - val_accuracy: 0.7656 - val_loss: 0.4855
+Epoch 5/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 465s 8s/step - accuracy: 0.7620 - loss: 0.4837 - val_accuracy: 0.7500 - val_loss: 0.4686
+Epoch 6/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 131s 2s/step - accuracy: 0.7188 - loss: 0.6087 - val_accuracy: 0.7474 - val_loss: 0.5179
+Epoch 7/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 491s 8s/step - accuracy: 0.7696 - loss: 0.4902 - val_accuracy: 0.7630 - val_loss: 0.4570
+Epoch 8/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 82s 1s/step - accuracy: 0.8438 - loss: 0.3137 - val_accuracy: 0.7708 - val_loss: 0.4474
+Epoch 9/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 462s 8s/step - accuracy: 0.8060 - loss: 0.4305 - val_accuracy: 0.7995 - val_loss: 0.4452
+Epoch 10/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 79s 1s/step - accuracy: 0.7812 - loss: 0.4174 - val_accuracy: 0.7734 - val_loss: 0.4424
+Epoch 11/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 487s 8s/step - accuracy: 0.8108 - loss: 0.4102 - val_accuracy: 0.7812 - val_loss: 0.4533
+Epoch 12/12
+58/58 ━━━━━━━━━━━━━━━━━━━━ 83s 1s/step - accuracy: 0.7812 - loss: 0.5917 - val_accuracy: 0.7917 - val_loss: 0.4406
+
+# Evaluate the model - plotting training and validation acc
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epochs')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+     
+
+
+# Evaluate the model - plotting training and validation loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epochs')
+plt.legend(['Train', 'Validation'], loc='upper left')
+plt.show()
+     
+
+
+# Evaluate the model using test data
+test_loss, test_acc = model.evaluate(test_generator, steps=test_generator.samples // batch_size)
+print(f'Test Accuracy: {test_acc:.4f}')
+     
+/usr/local/lib/python3.11/dist-packages/PIL/Image.py:3402: DecompressionBombWarning: Image size (96631920 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack.
+  warnings.warn(
+/usr/local/lib/python3.11/dist-packages/PIL/Image.py:3402: DecompressionBombWarning: Image size (101859328 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack.
+  warnings.warn(
+ 9/12 ━━━━━━━━━━━━━━━━━━━━ 23s 8s/step - accuracy: 0.8107 - loss: 0.3873
+/usr/local/lib/python3.11/dist-packages/PIL/Image.py:3402: DecompressionBombWarning: Image size (94487082 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack.
+  warnings.warn(
+12/12 ━━━━━━━━━━━━━━━━━━━━ 97s 8s/step - accuracy: 0.8047 - loss: 0.3958
+Test Accuracy: 0.7969
+
+# Save the model
+model.save('FFD.keras')
+     
+
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+
+# Load the model
+model = load_model('FFD.keras')
+
+# Predict on new image - create a function
+def predict_fire(img_path):
+  img = image.load_img(img_path, target_size=(150, 150))
+  img_array = image.img_to_array(img)
+  img_array = np.expand_dims(img_array, axis=0)
+  img_array /= 255.0
+
+  prediction = model.predict(img_array)
+  if prediction[0] > 0.5:
+    predicted_class = class_names[1]
+  else:
+    predicted_class = class_names[0]
+
+  plt.imshow(img)
+  plt.title(f'Predicted: {predicted_class}')
+  plt.axis('off')
+  plt.show()
+     
+
+os.listdir('/kaggle/input/the-wildfire-dataset/the_wildfire_dataset_2n_version/test/nofire')
+     
+['josh-sorenson-w_QAjcf1ipU-unsplash.jpg',
+ 'balazs-busznyak-AhMSy4GpU0w-unsplash.jpg',
+ '52358616216_ec885ff145_o.jpg',
+ 'matthias-heil-T7lMR-syZAg-unsplash.jpg',
+ 'mark-boss-KG8N1Rqf02w-unsplash.jpg',
+ 'chris-barbalis-SIbpq4Lvzdk-unsplash.jpg',
+ 'brendan-beale-h3qe4EZd4_4-unsplash.jpg',
+ 'dan-rogers-G807nWEuFIo-unsplash.jpg',
+ 'hala-alghanim-yyE90v_E8dA-unsplash.jpg',
+ 'zetong-li-79sabz_JrXg-unsplash.jpg',
+ 'federico-bottos-JUFuI-kBtas-unsplash.jpg',
+ 'single-earth-FP5tOXT6aMs-unsplash.jpg',
+ 'sunnie-KJ_G43MHDf0-unsplash.jpg',
+ '35581707273_fed23248e8_o.jpg',
+ 'martin-sanchez-ML6kHR--Uys-unsplash.jpg',
+ 'marek-piwnicki-DCGABYDIdT0-unsplash.jpg',
+ 'austin-schmid-zQ-y4Gj8194-unsplash.jpg',
+ 'rhema-kallianpur-t0GpJ2cdJuo-unsplash.jpg',
+ 'victor-rodriguez-e5g9otcYzkU-unsplash.jpg',
+ 'kristaps-ungurs-7aY6JOyFY8A-unsplash.jpg',
+ '52452040025_916ddf3f9d_o.jpg',
+ 'daniil-silantev-VggwSJxYlAw-unsplash.jpg',
+ 'josh-withers-UN_W3z4D0pw-unsplash.jpg',
+ 'dave-hoefler-swH_IVJGLDA-unsplash.jpg',
+ 'tobias-reich-SfhLrF4yxXI-unsplash.jpg',
+ 'cristian-vieriu-lDC7L1cQCeY-unsplash.jpg',
+ 'ozark-drones-iWMksWAU0so-unsplash.jpg',
+ 'tom-allport-Yh8_B8NlcFU-unsplash.jpg',
+ 'kym-mackinnon-HCSWKjv_cys-unsplash.jpg',
+ 'carles-rabada-f7UprkNqi08-unsplash.jpg',
+ 'nathan-anderson-PpZiXBY7_Nw-unsplash.jpg',
+ 'j-brouwer-43jy3ugj8pk-unsplash.jpg',
+ 'matthew-brodeur-aIxDXa4T-u8-unsplash.jpg',
+ 'nathan-anderson-ajFuxNTkRiE-unsplash.jpg',
+ 'kym-mackinnon-DDyw4XRzojA-unsplash.jpg',
+ 'marek-piwnicki-Z45VspLrGYk-unsplash.jpg',
+ 'jakub-sejkora-utqJcneoFjo-unsplash.jpg',
+ 'olivier-mesnage-lO6DOAIxDE0-unsplash.jpg',
+ 'linford-miles-ECYv-bIJ3s4-unsplash.jpg',
+ '42376136734_b4524237bf_o.jpg',
+ 'nathan-anderson-eelpgSLWrqo-unsplash.jpg',
+ 'ozark-drones-XfnxPrd0-2g-unsplash.jpg',
+ 'thought-catalog-bGiMXk8sMHw-unsplash.jpg',
+ 'eberhard-grossgasteiger-NB3dTVw1T0o-unsplash.jpg',
+ 'kym-mackinnon-zzlvHbtI1F8-unsplash.jpg',
+ 'marek-piwnicki-H7oXHL19SlU-unsplash.jpg',
+ 'adrian-mag-l9p-7JBmVFE-unsplash.jpg',
+ 'dave-hoefler-UFnHt94r91w-unsplash.jpg',
+ 'eberhard-grossgasteiger-Np1l2KmC0WA-unsplash.jpg',
+ 'huper-by-joshua-earle-Hm68X4fFf6s-unsplash.jpg',
+ 'clay-banks-EBW1p0vGqDc-unsplash.jpg',
+ 'alan-hardman-pLq3oZDUEWk-unsplash.jpg',
+ 'hans-isaacson-Ke1haOmqjdM-unsplash.jpg',
+ 'arnold-dogelis-JN782tahBLI-unsplash.jpg',
+ 'wolfgang-hasselmann-6yQbmbaucqg-unsplash.jpg',
+ 'wil-stewart-WxXMapKQujw-unsplash.jpg',
+ 'taras-chuiko-QiWzwOet4dQ-unsplash.jpg',
+ 'kirill-tonkikh-gZIl698xiGc-unsplash.jpg',
+ 'dave-hoefler-XfRglWxgJXk-unsplash.jpg',
+ '33696343816_811bd98925_o.jpg',
+ 'christopher-burns-9wgdqT2VNSE-unsplash.jpg',
+ 'dimitry-ljasuk-7q3xrpcBwuM-unsplash.jpg',
+ 'julien-lanoy-EGqaqmSNc2I-unsplash.jpg',
+ 'sander-lenaerts-X4yQIgcSYcQ-unsplash.jpg',
+ 'caleb-russell-gYUK48mFopg-unsplash.jpg',
+ 'eric-muhr-C6AY64q2l84-unsplash.jpg',
+ 'zongnan-bao-deagK9-Dmt0-unsplash.jpg',
+ 'kristaps-ungurs-hBWPG68Cct4-unsplash.jpg',
+ 'tomasz-smal-v3N-gJf62nE-unsplash.jpg',
+ 'lukas-mann-d-CvnGwwJts-unsplash.jpg',
+ 'steven-van-elk-Vu23WPzGBr8-unsplash.jpg',
+ 'kristaps-ungurs-s-4CYrJJXCU-unsplash.jpg',
+ 'marek-piwnicki-mTmKpI53NcY-unsplash.jpg',
+ 'jeffrey-blum-oFd4y82w9VY-unsplash.jpg',
+ 'tobias-reich-zwoFKAgEvT0-unsplash.jpg',
+ 'kristaps-ungurs-jywLBT6YHiM-unsplash.jpg',
+ 'john-towner-CakC6u4d95g-unsplash.jpg',
+ 'paul-pastourmatzis-KT3WlrL_bsg-unsplash.jpg',
+ '36644001004_f3e3a56edc_o.jpg',
+ 'peter-robbins-g1HdaJxDFrk-unsplash.jpg',
+ 'marek-piwnicki-z14zNu59bLo-unsplash.jpg',
+ 'toby-elliott-zeuK1e-c0wI-unsplash.jpg',
+ 'anthony-intraversato-YG5l5XIZ76w-unsplash.jpg',
+ '51099217941_143488e656_o.jpg',
+ 'cosmic-timetraveler-pIfF5Q8AYaE-unsplash.jpg',
+ 'julien-lanoy-EjMMJPrfb5E-unsplash.jpg',
+ 'corey-agopian-XGOzlCNeP1I-unsplash.jpg',
+ 'arnold-dogelis-lsjRjuJlg5M-unsplash.jpg',
+ 'kym-mackinnon-SMb0XdJxxfI-unsplash.jpg',
+ 'neven-krcmarek-ZM7PgZ1zU2k-unsplash.jpg',
+ 'tom-podmore-BdFn6XZzPOY-unsplash.jpg',
+ '41058079202_08ce34a338_o.jpg',
+ 'kym-mackinnon-imEpwtWEPPQ-unsplash.jpg',
+ 'malik-skydsgaard-GDDe4yAW5W4-unsplash.jpg',
+ 'jan-szwagrzyk-TGOorJ1Fkfo-unsplash.jpg',
+ 'pat-whelen-H5RYQLQMR38-unsplash.jpg',
+ 'waranont-joe-CJ1oBPZJFPg-unsplash.jpg',
+ '39728540251_888dc24afa_o.jpg',
+ 'jp-valery-W9iWetsS4EE-unsplash.jpg',
+ 'eberhard-grossgasteiger-l_oWTzCrgoA-unsplash.jpg',
+ 'ales-krivec-7-Og8aZTRyM-unsplash.jpg',
+ 'evan-leith-7fuZmBjjXjE-unsplash.jpg',
+ 'trey-gibson-MGtUhF7oN70-unsplash.jpg',
+ 'marek-piwnicki-2W7GMDQGuzI-unsplash.jpg',
+ 'spencer-watson-G5QSfcEUQ-M-unsplash.jpg',
+ 'eberhard-grossgasteiger-m9dWtVvoEww-unsplash.jpg',
+ 'dominik-fischer-90HyQxrg7ZE-unsplash.jpg',
+ 'kyle-mesdag-xrLn6YsmjI4-unsplash.jpg',
+ 'casey-horner-TI2iMeyOo-o-unsplash.jpg',
+ 'venti-views-Clwh1mksdAM-unsplash.jpg',
+ 'clay-banks-yBAgX-oGSeo-unsplash.jpg',
+ 'nathan-queloz-rj0KbZGsOP4-unsplash.jpg',
+ 'mael-seigneurie-UAFp3u8Rcvk-unsplash.jpg',
+ 'patrick-langwallner-zzRNMpEjppI-unsplash.jpg',
+ 'leslie-cross-v7nyWOBSnLw-unsplash.jpg',
+ 'nathan-anderson-YWWMGwXX2JY-unsplash.jpg',
+ 'marek-piwnicki-C8pKTvqtug0-unsplash.jpg',
+ 'nathan-queloz-gce72ixcGyU-unsplash.jpg',
+ 'nathan-anderson-EZ9kyweogsI-unsplash.jpg',
+ 'saketh-garuda-9nkoCtI1HnI-unsplash.jpg',
+ 'jonathan-arbely-5D9k7RnOgLQ-unsplash.jpg',
+ 'rc-victorino--o3x_dhZijU-unsplash.jpg',
+ '52359041065_1566fd6ec1_o.jpg',
+ 'cole-freeman-x2Gxd6ohasU-unsplash.jpg',
+ 'tolga-ahmetler-_b_80WiUkzY-unsplash.jpg',
+ 'kym-mackinnon-mT8BWsYyeU0-unsplash.jpg',
+ 'gwyn-DlTcL3W6fOs-unsplash.jpg',
+ 'casey-horner-Tmev8bpBSvw-unsplash.jpg',
+ 'dawson-mccormick-dZrXqr0IA8A-unsplash.jpg',
+ 'olena-sergienko-ZYZeA_rwW9I-unsplash.jpg',
+ 'kym-mackinnon-bYMkg-r-E0A-unsplash.jpg',
+ '50380847112_db217aea45_o.jpg',
+ 'yevhenii-dubrovskyi-7Ya_HBl5dpk-unsplash.jpg',
+ 'ethan-dow-l7Wb6FXHIOQ-unsplash.jpg',
+ 'eberhard-grossgasteiger--n-2Xhr3dOA-unsplash.jpg',
+ 'max-voxberg-hY5OUxg_Zgc-unsplash.jpg',
+ 'single-earth-pfXTECJcppk-unsplash.jpg',
+ '52358931719_b6fbcc77f2_o.jpg',
+ 'ben-den-engelsen-htcQ7uAWzAo-unsplash.jpg',
+ 'sergio-melo-YYXh3QHhk40-unsplash.jpg',
+ '49200563427_e5295b4455_o.jpg',
+ 't-selin-erkan--2xRZIGu3EU-unsplash.jpg',
+ 'iewek-gnos-W6y6xCk2s6c-unsplash.jpg',
+ 'john-vowles-lYbT6HBkimk-unsplash.jpg',
+ 'annie-spratt-FdlsmCxwHGU-unsplash.jpg',
+ 'bernd-dittrich-l8UiD8xY3IA-unsplash.jpg',
+ 'kym-mackinnon-ZaannBOrvY8-unsplash.jpg',
+ 'john-o-nolan-uMWPrcRsrto-unsplash.jpg',
+ '52357656897_dde5e5a66a_o.jpg',
+ '53078944067_43c7e3552a_o.jpg',
+ 'mark-basarab-okYSDKshIes-unsplash.jpg',
+ 'marek-piwnicki-bxsFTaNFFRY-unsplash.jpg',
+ 'malik-skydsgaard-OSQyEh1siCo-unsplash.jpg',
+ 'tristan-mckenzie-JZ7D9NsEO5I-unsplash.jpg',
+ 'eberhard-grossgasteiger-LmqySFs3TQQ-unsplash.jpg',
+ 'florian-van-duyn-grCP1PYmw60-unsplash.jpg',
+ 'cathal-mac-an-bheatha-6OrHxKx_tMc-unsplash.jpg',
+ '52452051055_4e2a4e4de0_o.jpg',
+ 'olena-sergienko-3BlVILvh9hM-unsplash.jpg',
+ 'eberhard-grossgasteiger-QoXYAE2hFJQ-unsplash.jpg',
+ 'gwyn-jqdZhPMqsg4-unsplash.jpg',
+ 'daniil-silantev-JfAzBxcRbv4-unsplash.jpg',
+ 'nathan-anderson-n5RPHzjxUWM-unsplash.jpg',
+ 'scott-taylor-rOrGGkyllm4-unsplash.jpg',
+ 'nathan-anderson-MEIBNPI1RC8-unsplash.jpg',
+ 'tom-podmore-eNWJIJeLnbk-unsplash.jpg',
+ 'nitish-meena-ANo5_iE9dcU-unsplash.jpg',
+ 'raphael-biscaldi-Ux_6dqF8WiQ-unsplash.jpg',
+ 'zetong-li-UVv2vL3ih7o-unsplash.jpg',
+ 'john-gibbons-fB_aqZDhKFw-unsplash.jpg',
+ 'john-towner-89PFnHKg8HE-unsplash.jpg',
+ '52359026765_4a4ba189c8_o.jpg',
+ 'felix-besombes-fAseBsd1r0U-unsplash.jpg',
+ 'dave-hoefler-U-Dhokv9iXk-unsplash.jpg',
+ 'levi-bare-5__JKMn5H_c-unsplash.jpg',
+ 'yann-allegre-ZDwp-QdzoH8-unsplash.jpg',
+ 'zhu-yunxiao-m6ao043bsrI-unsplash.jpg',
+ 'will-suddreth-hneAIGb01xQ-unsplash.jpg',
+ 'jean-wimmerlin-Dmsiauit2z0-unsplash.jpg',
+ 'nathan-queloz-1e_HHIbqk7s-unsplash.jpg',
+ 'ales-krivec-sTEg_SLAyUs-unsplash.jpg',
+ 'hunter-bryant-C0bPTsZnoH8-unsplash.jpg',
+ '50010867961_903b6432f7_o.jpg',
+ '23289748533_1a14a0f249_o.jpg',
+ 'dave-hoefler-H2fNMhs7lVo-unsplash.jpg',
+ 'stories-tNhGCix_HvA-unsplash.jpg',
+ 'yulian-alexeyev-R2BuLIE-i3M-unsplash.jpg',
+ '24498907094_491ca433dd_o.jpg',
+ 'kristaps-ungurs-gnrKdXxeLrQ-unsplash.jpg',
+ 'eberhard-grossgasteiger-HU_Ahk35FK8-unsplash.jpg',
+ 'marek-piwnicki-Yg7PWiIFqWM-unsplash.jpg',
+ 'kyson-dana-uTRC5HzYyXE-unsplash.jpg',
+ '49422069676_3e89abc052_o.jpg',
+ 'alina-fedorchenko-p2B1b56FjvQ-unsplash.jpg',
+ 'daniel-mirlea-sS7GkbDdpMY-unsplash.jpg',
+ 'augustine-wong-pdjFlhFqznc-unsplash.jpg',
+ 'sander-weeteling-rLvCmdZrS4Y-unsplash.jpg',
+ 'calvin-craig-MLf4-0_k-P8-unsplash.jpg',
+ 'andrew-svk-X4b2DK80F1k-unsplash.jpg',
+ 'andrew-svk-ob1NS03tWSE-unsplash.jpg',
+ 'mariusz-slonski-MxkcVyolp-4-unsplash.jpg',
+ 'kym-mackinnon-4wlQBd2xXDI-unsplash.jpg',
+ 'mathilda-khoo-00qUCwYToAY-unsplash.jpg',
+ 'spencer-watson-bYLHitxMHmU-unsplash.jpg',
+ 'drew-dau-w8uYD-4zbEo-unsplash.jpg',
+ 'neven-krcmarek-50HS3AzJsvQ-unsplash.jpg',
+ 'enrico-naletto-W0yZbLyshzc-unsplash.jpg',
+ 'nigel-tadyanehondo-RonhCA39VRw-unsplash.jpg',
+ 'troy-williams-7M6ZmfnKI6g-unsplash.jpg',
+ 'eberhard-grossgasteiger-wzuySoHrtX0-unsplash.jpg',
+ 'pat-whelen-5PGbTcaX9rs-unsplash.jpg',
+ 'kym-mackinnon-y70s9rNiuvY-unsplash.jpg',
+ 'malik-skydsgaard-GxEOyQLP7xY-unsplash.jpg',
+ 'filip-varga-AsgsGO6U78g-unsplash.jpg',
+ 'harrison-steen-lUDMZUWFUXE-unsplash.jpg',
+ 'inggrid-koe-kbKEuU-YEIw-unsplash.jpg',
+ 'nikola-knezevic-lPzO6ZGRGYI-unsplash.jpg',
+ 'nathan-queloz-gkMuexmFMR4-unsplash.jpg',
+ 'bahadir-L2G0g3mSliU-unsplash.jpg',
+ 'arnold-dogelis-04JZFPD5eBA-unsplash.jpg',
+ 'eberhard-grossgasteiger-gptRZytFzFQ-unsplash.jpg',
+ 'levi-bare-tI1Kc3LuRMI-unsplash.jpg',
+ 'lasma-artmane-II0WWqBorw0-unsplash.jpg',
+ 'ivars-utinans-r_LT_Ne3pVo-unsplash.jpg',
+ 'ryan-searle-bMQEHzEm09w-unsplash.jpg',
+ '45636031272_8408d32834_o.jpg',
+ 'carles-rabada-c9RYAY5f4Ac-unsplash.jpg',
+ 'silas-baisch-IRk4gKJQLBI-unsplash.jpg',
+ 'anton-repponen-zNxlvCZhHNA-unsplash.jpg',
+ '43078090081_07d1f9ec0f_o.jpg',
+ 'jeremy-bishop-1GJnLJjQ9sg-unsplash.jpg',
+ 'guy-tsror-ibpr-RbpRG8-unsplash.jpg',
+ 'smaran-alva-yOj9j2Ho-kE-unsplash.jpg',
+ 'ales-krivec-VfMgiZscSXE-unsplash.jpg',
+ 'mj-lDXV1dVQrTA-unsplash.jpg',
+ 'andrei-p-Sc_jhFDkqQc-unsplash.jpg',
+ 'marek-piwnicki-U22rbeq3m5E-unsplash.jpg',
+ 'ryo-yoshitake-c_rWbq-Bcb4-unsplash.jpg',
+ 'nicolas-cool-kG2uTD1KxYI-unsplash.jpg',
+ 'komang-gita-krishna-murti-bVeodNsZQZI-unsplash.jpg',
+ 'kym-mackinnon-GOAbTarWc0Q-unsplash.jpg',
+ 'alina-fedorchenko-UyQU4SlZTaA-unsplash.jpg',
+ 'erik-mclean-0aYkdo3XfYo-unsplash.jpg',
+ 'casey-horner--ulHK_2i1aY-unsplash.jpg',
+ 'nick-scheerbart-xFjAftU8lMY-unsplash.jpg',
+ 'artem-sapegin-8c6eS43iq1o-unsplash.jpg',
+ 'darpan-WwegI5jjJ4c-unsplash.jpg',
+ 'nathan-anderson-d1gPSEN9dOE-unsplash.jpg',
+ 'christine-kozak-HuwH6i0_pwk-unsplash.jpg',
+ 'chris-linnett-FatkDF8j3pk-unsplash.jpg',
+ '35554264024_b33afa21ac_o.jpg']
+
+predict_fire('/kaggle/input/the-wildfire-dataset/the_wildfire_dataset_2n_version/test/nofire/35554264024_b33afa21ac_o.jpg')
+     
+1/1 ━━━━━━━━━━━━━━━━━━━━ 2s 2s/step
